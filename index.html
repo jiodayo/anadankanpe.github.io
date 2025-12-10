@@ -99,6 +99,164 @@
 			border: 1px solid var(--accent-primary);
 		}
 
+		/* Table of Contents - Sidebar */
+		.toc-toggle {
+			position: fixed;
+			left: 1rem;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 44px;
+			height: 44px;
+			background: var(--bg-card);
+			border: 1px solid var(--border-color);
+			border-radius: 12px;
+			color: var(--text-primary);
+			font-size: 1.2rem;
+			cursor: pointer;
+			z-index: 200;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.3s ease;
+		}
+
+		.toc-toggle:hover {
+			background: var(--accent-secondary);
+			border-color: var(--accent-primary);
+			box-shadow: 0 4px 20px var(--accent-glow);
+		}
+
+		.toc-sidebar {
+			position: fixed;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			width: 280px;
+			background: var(--bg-secondary);
+			border-right: 1px solid var(--border-color);
+			z-index: 150;
+			transform: translateX(-100%);
+			transition: transform 0.3s ease;
+			overflow-y: auto;
+			padding: 2rem 0;
+		}
+
+		.toc-sidebar.open {
+			transform: translateX(0);
+		}
+
+		.toc-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0, 0, 0, 0.5);
+			z-index: 140;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+		}
+
+		.toc-overlay.open {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.toc-header {
+			padding: 0 1.5rem 1rem;
+			border-bottom: 1px solid var(--border-color);
+			margin-bottom: 1rem;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.toc-title {
+			font-size: 1.1rem;
+			font-weight: 700;
+			background: var(--gradient-2);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		.toc-close {
+			width: 32px;
+			height: 32px;
+			background: transparent;
+			border: none;
+			color: var(--text-secondary);
+			font-size: 1.2rem;
+			cursor: pointer;
+			border-radius: 8px;
+			transition: all 0.2s ease;
+		}
+
+		.toc-close:hover {
+			background: var(--bg-card);
+			color: var(--text-primary);
+		}
+
+		.toc-dungeon {
+			margin-bottom: 0.5rem;
+		}
+
+		.toc-dungeon-header {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.75rem 1.5rem;
+			color: var(--text-primary);
+			text-decoration: none;
+			font-weight: 500;
+			transition: all 0.2s ease;
+		}
+
+		.toc-dungeon-header:hover {
+			background: var(--bg-card);
+			color: var(--accent-primary);
+		}
+
+		.toc-dungeon-header.active {
+			background: var(--accent-secondary);
+			color: var(--accent-primary);
+			border-left: 3px solid var(--accent-primary);
+		}
+
+		.toc-boss-list {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.toc-boss-item {
+			display: block;
+			padding: 0.5rem 1.5rem 0.5rem 3rem;
+			color: var(--text-secondary);
+			text-decoration: none;
+			font-size: 0.9rem;
+			transition: all 0.2s ease;
+		}
+
+		.toc-boss-item:hover {
+			color: var(--text-primary);
+			background: var(--bg-card);
+		}
+
+		.toc-boss-item.active {
+			color: var(--accent-primary);
+		}
+
+		.toc-boss-tag {
+			font-size: 0.7rem;
+			background: var(--accent-secondary);
+			color: var(--accent-primary);
+			padding: 0.1rem 0.4rem;
+			border-radius: 4px;
+			margin-left: 0.25rem;
+		}
+
 		/* Navigation */
 		.nav-container {
 			background: var(--bg-secondary);
@@ -208,6 +366,7 @@
 			overflow: hidden;
 			border: 1px solid var(--border-color);
 			transition: all 0.3s ease;
+			scroll-margin-top: 100px;
 		}
 
 		.boss-card:hover {
@@ -356,6 +515,16 @@
 			.boss-header {
 				padding: 0.75rem 1rem;
 			}
+
+			.toc-toggle {
+				left: 0.5rem;
+				width: 40px;
+				height: 40px;
+			}
+
+			.toc-sidebar {
+				width: 260px;
+			}
 		}
 
 		/* Scroll to top */
@@ -389,6 +558,59 @@
 </head>
 
 <body>
+	<!-- TOC Toggle Button -->
+	<button class="toc-toggle" id="tocToggle" onclick="toggleToc()" title="目次を開く">
+		📑
+	</button>
+
+	<!-- TOC Overlay -->
+	<div class="toc-overlay" id="tocOverlay" onclick="toggleToc()"></div>
+
+	<!-- TOC Sidebar -->
+	<aside class="toc-sidebar" id="tocSidebar">
+		<div class="toc-header">
+			<span class="toc-title">📜 目次</span>
+			<button class="toc-close" onclick="toggleToc()">×</button>
+		</div>
+		
+		<!-- シラディハ -->
+		<div class="toc-dungeon">
+			<a href="#sira" class="toc-dungeon-header" onclick="closeTocOnMobile()">
+				🏛️ 異聞シラディハ
+			</a>
+			<div class="toc-boss-list">
+				<a href="#sira-1" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス</a>
+				<a href="#sira-2" class="toc-boss-item" onclick="closeTocOnMobile()">2ボス</a>
+				<a href="#sira-3" class="toc-boss-item" onclick="closeTocOnMobile()">3ボス</a>
+			</div>
+		</div>
+
+		<!-- 六根山 -->
+		<div class="toc-dungeon">
+			<a href="#roku" class="toc-dungeon-header" onclick="closeTocOnMobile()">
+				⛰️ 異聞六根山
+			</a>
+			<div class="toc-boss-list">
+				<a href="#roku-1" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス</a>
+				<a href="#roku-2" class="toc-boss-item" onclick="closeTocOnMobile()">2ボス</a>
+				<a href="#roku-3" class="toc-boss-item" onclick="closeTocOnMobile()">3ボス</a>
+			</div>
+		</div>
+
+		<!-- アロアロ -->
+		<div class="toc-dungeon">
+			<a href="#aro" class="toc-dungeon-header" onclick="closeTocOnMobile()">
+				🏝️ 異聞アロアロ
+			</a>
+			<div class="toc-boss-list">
+				<a href="#aro-1" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span class="toc-boss-tag">ピレン</span></a>
+				<a href="#aro-1-alt" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span class="toc-boss-tag">非ピレン</span></a>
+				<a href="#aro-2" class="toc-boss-item" onclick="closeTocOnMobile()">2ボス</a>
+				<a href="#aro-3" class="toc-boss-item" onclick="closeTocOnMobile()">3ボス</a>
+			</div>
+		</div>
+	</aside>
+
 	<!-- Hero Section -->
 	<section class="hero">
 		<div class="hero-content">
@@ -426,7 +648,7 @@
 				<h2 class="dungeon-title">異聞シラディハ</h2>
 			</div>
 			<div class="boss-grid">
-				<article class="boss-card">
+				<article id="sira-1" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">1</span>
 						<span class="boss-name">1ボス</span>
@@ -435,7 +657,7 @@
 						<img src="images/sira1.jpg" alt="シラディハ 1ボス攻略" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="sira-2" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">2</span>
 						<span class="boss-name">2ボス</span>
@@ -444,7 +666,7 @@
 						<img src="images/sira2.jpg" alt="シラディハ 2ボス攻略" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="sira-3" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">3</span>
 						<span class="boss-name">3ボス</span>
@@ -463,7 +685,7 @@
 				<h2 class="dungeon-title">異聞六根山</h2>
 			</div>
 			<div class="boss-grid">
-				<article class="boss-card">
+				<article id="roku-1" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">1</span>
 						<span class="boss-name">1ボス</span>
@@ -472,7 +694,7 @@
 						<img src="images/roku1.jpg" alt="六根山 1ボス攻略" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="roku-2" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">2</span>
 						<span class="boss-name">2ボス</span>
@@ -481,7 +703,7 @@
 						<img src="images/roku2.jpg" alt="六根山 2ボス攻略" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="roku-3" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">3</span>
 						<span class="boss-name">3ボス</span>
@@ -500,7 +722,7 @@
 				<h2 class="dungeon-title">異聞アロアロ</h2>
 			</div>
 			<div class="boss-grid">
-				<article class="boss-card">
+				<article id="aro-1" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">1</span>
 						<span class="boss-name">1ボス</span>
@@ -510,7 +732,7 @@
 						<img src="images/aro1.jpg" alt="アロアロ 1ボス ピレン処理" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="aro-1-alt" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">1</span>
 						<span class="boss-name">1ボス</span>
@@ -520,7 +742,7 @@
 						<img src="images/aro1-alt.jpg" alt="アロアロ 1ボス 非ピレン処理" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="aro-2" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">2</span>
 						<span class="boss-name">2ボス</span>
@@ -529,7 +751,7 @@
 						<img src="images/aro2.jpg" alt="アロアロ 2ボス攻略" class="boss-image" onclick="openLightbox(this)">
 					</div>
 				</article>
-				<article class="boss-card">
+				<article id="aro-3" class="boss-card">
 					<div class="boss-header">
 						<span class="boss-number">3</span>
 						<span class="boss-name">3ボス</span>
@@ -558,6 +780,46 @@
 	<button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
 
 	<script>
+		// TOC Sidebar
+		function toggleToc() {
+			const sidebar = document.getElementById('tocSidebar');
+			const overlay = document.getElementById('tocOverlay');
+			sidebar.classList.toggle('open');
+			overlay.classList.toggle('open');
+		}
+
+		function closeTocOnMobile() {
+			if (window.innerWidth <= 768) {
+				const sidebar = document.getElementById('tocSidebar');
+				const overlay = document.getElementById('tocOverlay');
+				sidebar.classList.remove('open');
+				overlay.classList.remove('open');
+			}
+		}
+
+		// Highlight current section in TOC
+		const sections = document.querySelectorAll('.dungeon-section, .boss-card');
+		const tocLinks = document.querySelectorAll('.toc-dungeon-header, .toc-boss-item');
+
+		function updateActiveToc() {
+			let current = '';
+			sections.forEach(section => {
+				const sectionTop = section.offsetTop;
+				if (scrollY >= sectionTop - 150) {
+					current = section.getAttribute('id');
+				}
+			});
+
+			tocLinks.forEach(link => {
+				link.classList.remove('active');
+				if (link.getAttribute('href') === '#' + current) {
+					link.classList.add('active');
+				}
+			});
+		}
+
+		window.addEventListener('scroll', updateActiveToc);
+
 		// Lightbox
 		function openLightbox(img) {
 			const lightbox = document.getElementById('lightbox');
@@ -573,9 +835,15 @@
 			document.body.style.overflow = '';
 		}
 
-		// ESC key to close lightbox
+		// ESC key to close lightbox or TOC
 		document.addEventListener('keydown', (e) => {
-			if (e.key === 'Escape') closeLightbox();
+			if (e.key === 'Escape') {
+				closeLightbox();
+				const sidebar = document.getElementById('tocSidebar');
+				const overlay = document.getElementById('tocOverlay');
+				sidebar.classList.remove('open');
+				overlay.classList.remove('open');
+			}
 		});
 
 		// Scroll to top button
