@@ -963,16 +963,17 @@
 						<img src="images/aro1-alt.jpg" alt="アロアロ 1ボス 非ピレン処理" class="boss-image"
 							onclick="openLightbox(this)">
 					</div>
-				</article <article id="aro-1-sirosiro" class="boss-card">
-				<div class="boss-header">
-					<span class="boss-number">1</span>
-					<span class="boss-name">1ボス</span>
-					<span class="boss-tag">しろしろ固定</span>
-				</div>
-				<div class="boss-image-container">
-					<img src="images/aro1_sirosiro.png" alt="アロアロ 1ボス しろしろ固定" class="boss-image"
-						onclick="openLightbox(this)">
-				</div>
+				</article>
+				<article id="aro-1-sirosiro" class="boss-card">
+					<div class="boss-header">
+						<span class="boss-number">1</span>
+						<span class="boss-name">1ボス</span>
+						<span class="boss-tag">しろしろ固定</span>
+					</div>
+					<div class="boss-image-container">
+						<img src="images/aro1_sirosiro.png" alt="アロアロ 1ボス しろしろ固定" class="boss-image"
+							onclick="openLightbox(this)">
+					</div>
 				</article>
 				<article id="aro-2" class="boss-card">
 					<div class="boss-header">
@@ -1024,6 +1025,13 @@
 		const focusModeBtn = document.getElementById('focusModeBtn');
 		const tocProgress = document.getElementById('tocProgress');
 		const bossCards = Array.from(document.querySelectorAll('.boss-card'));
+		const linkedBossGroups = [
+			['aro-1', 'aro-1-alt', 'aro-1-sirosiro']
+		];
+		const linkedBossMap = new Map();
+		linkedBossGroups.forEach(group => {
+			group.forEach(id => linkedBossMap.set(id, group));
+		});
 		const bossCardIds = new Set(bossCards.map(card => card.id));
 		const clearedBosses = new Set(JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) || '[]'));
 		Array.from(clearedBosses).forEach(id => {
@@ -1031,6 +1039,19 @@
 				clearedBosses.delete(id);
 			}
 		});
+		linkedBossGroups.forEach(group => {
+			if (group.some(id => clearedBosses.has(id))) {
+				group.forEach(id => {
+					if (bossCardIds.has(id)) {
+						clearedBosses.add(id);
+					}
+				});
+			}
+		});
+
+		function getLinkedBossIds(cardId) {
+			return linkedBossMap.get(cardId) || [cardId];
+		}
 
 		// TOC Sidebar
 		function toggleToc() {
@@ -1090,16 +1111,21 @@
 		}
 
 		function toggleBossCleared(cardId) {
-			if (clearedBosses.has(cardId)) {
-				clearedBosses.delete(cardId);
-			} else {
-				clearedBosses.add(cardId);
-			}
+			const linkedIds = getLinkedBossIds(cardId).filter(id => bossCardIds.has(id));
+			const shouldClear = !linkedIds.every(id => clearedBosses.has(id));
 
-			const targetCard = document.getElementById(cardId);
-			if (targetCard) {
-				setBossClearedState(targetCard, clearedBosses.has(cardId));
-			}
+			linkedIds.forEach(id => {
+				if (shouldClear) {
+					clearedBosses.add(id);
+				} else {
+					clearedBosses.delete(id);
+				}
+
+				const targetCard = document.getElementById(id);
+				if (targetCard) {
+					setBossClearedState(targetCard, shouldClear);
+				}
+			});
 
 			saveProgress();
 			updateProgress();
