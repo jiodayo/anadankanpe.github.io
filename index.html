@@ -58,7 +58,7 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background: 
+			background:
 				radial-gradient(circle at 20% 50%, var(--accent-glow) 0%, transparent 50%),
 				radial-gradient(circle at 80% 50%, rgba(102, 126, 234, 0.3) 0%, transparent 50%);
 			pointer-events: none;
@@ -345,9 +345,17 @@
 			font-size: 1.5rem;
 		}
 
-		.dungeon-icon.sira { background: var(--gradient-1); }
-		.dungeon-icon.roku { background: var(--gradient-3); }
-		.dungeon-icon.aro { background: var(--gradient-2); }
+		.dungeon-icon.sira {
+			background: var(--gradient-1);
+		}
+
+		.dungeon-icon.roku {
+			background: var(--gradient-3);
+		}
+
+		.dungeon-icon.aro {
+			background: var(--gradient-2);
+		}
 
 		.dungeon-title {
 			font-size: 1.75rem;
@@ -453,6 +461,54 @@
 			border-radius: 8px;
 		}
 
+		.lightbox-nav {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 48px;
+			height: 48px;
+			background: rgba(22, 33, 62, 0.8);
+			border: 1px solid var(--border-color);
+			border-radius: 50%;
+			color: var(--text-primary);
+			font-size: 1.8rem;
+			line-height: 1;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.2s ease;
+			z-index: 1001;
+		}
+
+		.lightbox-nav:hover {
+			background: var(--accent-secondary);
+			border-color: var(--accent-primary);
+		}
+
+		.lightbox-nav.prev {
+			left: 1rem;
+		}
+
+		.lightbox-nav.next {
+			right: 1rem;
+		}
+
+		.lightbox-caption {
+			position: absolute;
+			bottom: 1.25rem;
+			left: 50%;
+			transform: translateX(-50%);
+			background: rgba(15, 15, 26, 0.8);
+			border: 1px solid var(--border-color);
+			border-radius: 999px;
+			padding: 0.45rem 0.9rem;
+			font-size: 0.85rem;
+			color: var(--text-primary);
+			max-width: calc(100% - 7rem);
+			text-align: center;
+		}
+
 		.lightbox-close {
 			position: absolute;
 			top: 1rem;
@@ -469,6 +525,7 @@
 			align-items: center;
 			justify-content: center;
 			transition: background 0.3s ease;
+			z-index: 1002;
 		}
 
 		.lightbox-close:hover {
@@ -525,6 +582,17 @@
 			.toc-sidebar {
 				width: 260px;
 			}
+
+			.lightbox-nav {
+				width: 42px;
+				height: 42px;
+				font-size: 1.5rem;
+			}
+
+			.lightbox-caption {
+				font-size: 0.78rem;
+				max-width: calc(100% - 5rem);
+			}
 		}
 
 		/* Scroll to top */
@@ -572,7 +640,7 @@
 			<span class="toc-title">📜 目次</span>
 			<button class="toc-close" onclick="toggleToc()">×</button>
 		</div>
-		
+
 		<!-- シラディハ -->
 		<div class="toc-dungeon">
 			<a href="#sira" class="toc-dungeon-header" onclick="closeTocOnMobile()">
@@ -603,8 +671,12 @@
 				🏝️ 異聞アロアロ
 			</a>
 			<div class="toc-boss-list">
-				<a href="#aro-1" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span class="toc-boss-tag">ピレン</span></a>
-				<a href="#aro-1-alt" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span class="toc-boss-tag">非ピレン</span></a>
+				<a href="#aro-1" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span
+						class="toc-boss-tag">ピレン</span></a>
+				<a href="#aro-1-alt" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span
+						class="toc-boss-tag">非ピレン / でれぃ鳥</span></a>
+				<a href="#aro-1-sirosiro" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span
+						class="toc-boss-tag">しろしろ固定</span></a>
 				<a href="#aro-2" class="toc-boss-item" onclick="closeTocOnMobile()">2ボス</a>
 				<a href="#aro-3" class="toc-boss-item" onclick="closeTocOnMobile()">3ボス</a>
 			</div>
@@ -634,7 +706,7 @@
 			</a>
 			<a href="#aro" class="nav-item">
 				<span class="dungeon-name">🏝️ 異聞アロアロ</span>
-				<span class="boss-count">3ボス</span>
+				<span class="boss-count">5資料</span>
 			</a>
 		</div>
 	</nav>
@@ -736,10 +808,22 @@
 					<div class="boss-header">
 						<span class="boss-number">1</span>
 						<span class="boss-name">1ボス</span>
-						<span class="boss-tag">非ピレン処理</span>
+						<span class="boss-tag">非ピレン / でれぃ鳥</span>
 					</div>
 					<div class="boss-image-container">
-						<img src="images/aro1-alt.jpg" alt="アロアロ 1ボス 非ピレン処理" class="boss-image" onclick="openLightbox(this)">
+						<img src="images/aro1-alt.jpg" alt="アロアロ 1ボス 非ピレン処理" class="boss-image"
+							onclick="openLightbox(this)">
+					</div>
+				</article>
+				<article id="aro-1-sirosiro" class="boss-card">
+					<div class="boss-header">
+						<span class="boss-number">1</span>
+						<span class="boss-name">1ボス</span>
+						<span class="boss-tag">しろしろ固定</span>
+					</div>
+					<div class="boss-image-container">
+						<img src="images/aro1_sirosiro.png" alt="アロアロ 1ボス しろしろ固定" class="boss-image"
+							onclick="openLightbox(this)">
 					</div>
 				</article>
 				<article id="aro-2" class="boss-card">
@@ -773,7 +857,12 @@
 	<!-- Lightbox -->
 	<div class="lightbox" id="lightbox" onclick="closeLightbox()">
 		<button class="lightbox-close" onclick="closeLightbox()">×</button>
-		<img src="" alt="拡大画像" id="lightbox-img">
+		<button class="lightbox-nav prev" onclick="event.stopPropagation(); navigateLightbox(-1)"
+			aria-label="前の画像">‹</button>
+		<img src="" alt="拡大画像" id="lightbox-img" onclick="event.stopPropagation()">
+		<button class="lightbox-nav next" onclick="event.stopPropagation(); navigateLightbox(1)"
+			aria-label="次の画像">›</button>
+		<p class="lightbox-caption" id="lightbox-caption"></p>
 	</div>
 
 	<!-- Scroll to Top Button -->
@@ -821,18 +910,44 @@
 		window.addEventListener('scroll', updateActiveToc);
 
 		// Lightbox
+		const lightbox = document.getElementById('lightbox');
+		const lightboxImg = document.getElementById('lightbox-img');
+		const lightboxCaption = document.getElementById('lightbox-caption');
+		let lightboxImages = [];
+		let currentLightboxIndex = -1;
+
 		function openLightbox(img) {
-			const lightbox = document.getElementById('lightbox');
-			const lightboxImg = document.getElementById('lightbox-img');
-			lightboxImg.src = img.src;
+			lightboxImages = Array.from(document.querySelectorAll('.boss-image'));
+			currentLightboxIndex = lightboxImages.indexOf(img);
+			updateLightboxView();
 			lightbox.classList.add('active');
 			document.body.style.overflow = 'hidden';
 		}
 
+		function updateLightboxView() {
+			if (currentLightboxIndex < 0 || currentLightboxIndex >= lightboxImages.length) {
+				return;
+			}
+
+			const currentImage = lightboxImages[currentLightboxIndex];
+			lightboxImg.src = currentImage.src;
+			lightboxImg.alt = currentImage.alt || '拡大画像';
+			lightboxCaption.textContent = currentImage.alt || '';
+		}
+
+		function navigateLightbox(direction) {
+			if (!lightbox.classList.contains('active') || lightboxImages.length === 0) {
+				return;
+			}
+
+			currentLightboxIndex = (currentLightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
+			updateLightboxView();
+		}
+
 		function closeLightbox() {
-			const lightbox = document.getElementById('lightbox');
 			lightbox.classList.remove('active');
 			document.body.style.overflow = '';
+			currentLightboxIndex = -1;
 		}
 
 		// ESC key to close lightbox or TOC
@@ -844,11 +959,19 @@
 				sidebar.classList.remove('open');
 				overlay.classList.remove('open');
 			}
+
+			if (e.key === 'ArrowLeft') {
+				navigateLightbox(-1);
+			}
+
+			if (e.key === 'ArrowRight') {
+				navigateLightbox(1);
+			}
 		});
 
 		// Scroll to top button
 		const scrollTopBtn = document.getElementById('scrollTop');
-		
+
 		window.addEventListener('scroll', () => {
 			if (window.scrollY > 500) {
 				scrollTopBtn.classList.add('visible');
