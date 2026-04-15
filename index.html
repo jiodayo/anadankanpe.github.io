@@ -257,6 +257,79 @@
 			margin-left: 0.25rem;
 		}
 
+		.toc-tools {
+			padding: 0 1.5rem 1rem;
+			border-bottom: 1px solid var(--border-color);
+			margin-bottom: 1rem;
+		}
+
+		.toc-search-label {
+			display: block;
+			font-size: 0.75rem;
+			color: var(--text-secondary);
+			margin-bottom: 0.4rem;
+		}
+
+		.toc-search {
+			width: 100%;
+			padding: 0.6rem 0.75rem;
+			border-radius: 10px;
+			border: 1px solid var(--border-color);
+			background: var(--bg-card);
+			color: var(--text-primary);
+			outline: none;
+			font-size: 0.9rem;
+		}
+
+		.toc-search:focus {
+			border-color: var(--accent-primary);
+			box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.2);
+		}
+
+		.toc-utility-row {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			margin-top: 0.7rem;
+		}
+
+		.toc-tool-btn {
+			flex: 1;
+			padding: 0.5rem 0.6rem;
+			border-radius: 8px;
+			border: 1px solid var(--border-color);
+			background: var(--bg-card);
+			color: var(--text-primary);
+			cursor: pointer;
+			font-size: 0.78rem;
+			transition: all 0.2s ease;
+		}
+
+		.toc-tool-btn:hover {
+			border-color: var(--accent-primary);
+			color: var(--accent-primary);
+		}
+
+		.toc-progress {
+			font-size: 0.75rem;
+			color: var(--text-secondary);
+			white-space: nowrap;
+		}
+
+		.toc-dungeon.hidden,
+		.toc-boss-item.hidden {
+			display: none;
+		}
+
+		.toc-boss-item.cleared {
+			color: #7bd88f;
+		}
+
+		.toc-boss-item.cleared::before {
+			content: '✓ ';
+			font-weight: 700;
+		}
+
 		/* Navigation */
 		.nav-container {
 			background: var(--bg-secondary);
@@ -323,7 +396,7 @@
 		/* Dungeon Section */
 		.dungeon-section {
 			margin-bottom: 4rem;
-			scroll-margin-top: 100px;
+			scroll-margin-top: 24px;
 		}
 
 		.dungeon-header {
@@ -374,7 +447,7 @@
 			overflow: hidden;
 			border: 1px solid var(--border-color);
 			transition: all 0.3s ease;
-			scroll-margin-top: 100px;
+			scroll-margin-top: 24px;
 		}
 
 		.boss-card:hover {
@@ -384,7 +457,9 @@
 		}
 
 		.boss-header {
+			position: relative;
 			padding: 1rem 1.5rem;
+			padding-right: 4.6rem;
 			background: var(--bg-secondary);
 			display: flex;
 			align-items: center;
@@ -411,12 +486,52 @@
 
 		.boss-tag {
 			margin-left: auto;
+			margin-right: 2.8rem;
 			background: var(--accent-secondary);
 			color: var(--accent-primary);
 			padding: 0.25rem 0.75rem;
 			border-radius: 20px;
 			font-size: 0.75rem;
 			border: 1px solid var(--accent-primary);
+		}
+
+		.boss-check {
+			position: absolute;
+			right: 1rem;
+			top: 50%;
+			transform: translateY(-50%);
+			min-width: 2.2rem;
+			height: 2rem;
+			padding: 0 0.55rem;
+			border-radius: 999px;
+			border: 1px solid var(--border-color);
+			background: var(--bg-card);
+			color: var(--text-secondary);
+			cursor: pointer;
+			font-size: 0.72rem;
+			font-weight: 700;
+			transition: all 0.2s ease;
+		}
+
+		.boss-check:hover {
+			border-color: var(--accent-primary);
+			color: var(--accent-primary);
+		}
+
+		.boss-card.cleared {
+			border-color: rgba(123, 216, 143, 0.55);
+			box-shadow: 0 8px 30px rgba(123, 216, 143, 0.15);
+		}
+
+		.boss-card.cleared .boss-number {
+			background: #7bd88f;
+			color: #0f0f1a;
+		}
+
+		.boss-card.cleared .boss-check {
+			background: rgba(123, 216, 143, 0.18);
+			border-color: rgba(123, 216, 143, 0.75);
+			color: #7bd88f;
 		}
 
 		.boss-image-container {
@@ -571,6 +686,20 @@
 
 			.boss-header {
 				padding: 0.75rem 1rem;
+				padding-right: 4rem;
+			}
+
+			.boss-tag {
+				margin-right: 2.2rem;
+			}
+
+			.toc-utility-row {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.toc-progress {
+				text-align: center;
 			}
 
 			.toc-toggle {
@@ -592,6 +721,36 @@
 			.lightbox-caption {
 				font-size: 0.78rem;
 				max-width: calc(100% - 5rem);
+			}
+		}
+
+		/* Focus Mode for side-by-side play */
+		.focus-mode .hero,
+		.focus-mode .footer {
+			display: none;
+		}
+
+		.focus-mode .main {
+			padding-top: 1rem;
+		}
+
+		.focus-mode .toc-overlay {
+			display: none !important;
+		}
+
+		@media (min-width: 1024px) {
+			.focus-mode .toc-toggle {
+				display: none;
+			}
+
+			.focus-mode .toc-sidebar {
+				transform: translateX(0);
+			}
+
+			.focus-mode .main {
+				max-width: none;
+				margin-left: 300px;
+				padding: 1rem 2rem 2rem;
 			}
 		}
 
@@ -640,6 +799,14 @@
 			<span class="toc-title">📜 目次</span>
 			<button class="toc-close" onclick="toggleToc()">×</button>
 		</div>
+		<div class="toc-tools">
+			<label for="tocSearch" class="toc-search-label">検索 / 絞り込み</label>
+			<input type="search" id="tocSearch" class="toc-search" placeholder="例: 六根山 2ボス">
+			<div class="toc-utility-row">
+				<button type="button" class="toc-tool-btn" id="focusModeBtn">攻略モード: OFF</button>
+				<span class="toc-progress" id="tocProgress">進捗 0 / 0</span>
+			</div>
+		</div>
 
 		<!-- シラディハ -->
 		<div class="toc-dungeon">
@@ -674,7 +841,7 @@
 				<a href="#aro-1" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span
 						class="toc-boss-tag">ピレン</span></a>
 				<a href="#aro-1-alt" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span
-						class="toc-boss-tag">非ピレン / でれぃ鳥</span></a>
+						class="toc-boss-tag">非ピレン</span></a>
 				<a href="#aro-1-sirosiro" class="toc-boss-item" onclick="closeTocOnMobile()">1ボス <span
 						class="toc-boss-tag">しろしろ固定</span></a>
 				<a href="#aro-2" class="toc-boss-item" onclick="closeTocOnMobile()">2ボス</a>
@@ -692,24 +859,6 @@
 			<span class="hero-badge">🎮 FF14 アナザーダンジョン攻略</span>
 		</div>
 	</section>
-
-	<!-- Navigation -->
-	<nav class="nav-container">
-		<div class="nav">
-			<a href="#sira" class="nav-item">
-				<span class="dungeon-name">🏛️ 異聞シラディハ</span>
-				<span class="boss-count">3ボス</span>
-			</a>
-			<a href="#roku" class="nav-item">
-				<span class="dungeon-name">⛰️ 異聞六根山</span>
-				<span class="boss-count">3ボス</span>
-			</a>
-			<a href="#aro" class="nav-item">
-				<span class="dungeon-name">🏝️ 異聞アロアロ</span>
-				<span class="boss-count">5資料</span>
-			</a>
-		</div>
-	</nav>
 
 	<!-- Main Content -->
 	<main class="main">
@@ -869,10 +1018,30 @@
 	<button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
 
 	<script>
+		const PROGRESS_STORAGE_KEY = 'anadan-cleared-bosses-v1';
+		const FOCUS_STORAGE_KEY = 'anadan-focus-mode-v1';
+
+		const tocSearchInput = document.getElementById('tocSearch');
+		const focusModeBtn = document.getElementById('focusModeBtn');
+		const tocProgress = document.getElementById('tocProgress');
+		const bossCards = Array.from(document.querySelectorAll('.boss-card'));
+		const bossCardIds = new Set(bossCards.map(card => card.id));
+		const clearedBosses = new Set(JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) || '[]'));
+		Array.from(clearedBosses).forEach(id => {
+			if (!bossCardIds.has(id)) {
+				clearedBosses.delete(id);
+			}
+		});
+
 		// TOC Sidebar
 		function toggleToc() {
 			const sidebar = document.getElementById('tocSidebar');
 			const overlay = document.getElementById('tocOverlay');
+
+			if (document.body.classList.contains('focus-mode') && window.innerWidth >= 1024) {
+				return;
+			}
+
 			sidebar.classList.toggle('open');
 			overlay.classList.toggle('open');
 		}
@@ -884,6 +1053,103 @@
 				sidebar.classList.remove('open');
 				overlay.classList.remove('open');
 			}
+		}
+
+		function applyFocusMode(enabled) {
+			document.body.classList.toggle('focus-mode', enabled);
+			focusModeBtn.textContent = `攻略モード: ${enabled ? 'ON' : 'OFF'}`;
+
+			const sidebar = document.getElementById('tocSidebar');
+			const overlay = document.getElementById('tocOverlay');
+			if (enabled && window.innerWidth >= 1024) {
+				sidebar.classList.add('open');
+				overlay.classList.remove('open');
+			}
+		}
+
+		function setBossClearedState(card, cleared) {
+			card.classList.toggle('cleared', cleared);
+			const checkButton = card.querySelector('.boss-check');
+			if (checkButton) {
+				checkButton.textContent = cleared ? '済' : '未';
+				checkButton.setAttribute('aria-pressed', String(cleared));
+				checkButton.setAttribute('title', cleared ? 'クリア済み' : '未クリア');
+			}
+
+			const tocLink = document.querySelector(`.toc-boss-item[href="#${card.id}"]`);
+			if (tocLink) {
+				tocLink.classList.toggle('cleared', cleared);
+			}
+		}
+
+		function saveProgress() {
+			localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(Array.from(clearedBosses)));
+		}
+
+		function updateProgress() {
+			tocProgress.textContent = `進捗 ${clearedBosses.size} / ${bossCards.length}`;
+		}
+
+		function toggleBossCleared(cardId) {
+			if (clearedBosses.has(cardId)) {
+				clearedBosses.delete(cardId);
+			} else {
+				clearedBosses.add(cardId);
+			}
+
+			const targetCard = document.getElementById(cardId);
+			if (targetCard) {
+				setBossClearedState(targetCard, clearedBosses.has(cardId));
+			}
+
+			saveProgress();
+			updateProgress();
+		}
+
+		function injectBossCheckButtons() {
+			bossCards.forEach(card => {
+				const header = card.querySelector('.boss-header');
+				if (!header || header.querySelector('.boss-check')) {
+					return;
+				}
+
+				const checkButton = document.createElement('button');
+				checkButton.className = 'boss-check';
+				checkButton.type = 'button';
+				checkButton.addEventListener('click', (event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					toggleBossCleared(card.id);
+				});
+
+				header.appendChild(checkButton);
+				setBossClearedState(card, clearedBosses.has(card.id));
+			});
+			updateProgress();
+		}
+
+		function filterToc() {
+			const keyword = tocSearchInput.value.trim().toLowerCase();
+			const tocDungeons = document.querySelectorAll('.toc-dungeon');
+
+			tocDungeons.forEach(dungeon => {
+				const dungeonHeader = dungeon.querySelector('.toc-dungeon-header');
+				const bossItems = Array.from(dungeon.querySelectorAll('.toc-boss-item'));
+				const dungeonText = (dungeonHeader?.textContent || '').toLowerCase();
+				const dungeonMatches = keyword === '' || dungeonText.includes(keyword);
+
+				let visibleItemCount = 0;
+				bossItems.forEach(item => {
+					const itemMatches = keyword === '' || dungeonMatches || item.textContent.toLowerCase().includes(keyword);
+					item.classList.toggle('hidden', !itemMatches);
+					if (itemMatches) {
+						visibleItemCount += 1;
+					}
+				});
+
+				const showDungeon = keyword === '' || dungeonMatches || visibleItemCount > 0;
+				dungeon.classList.toggle('hidden', !showDungeon);
+			});
 		}
 
 		// Highlight current section in TOC
@@ -908,6 +1174,7 @@
 		}
 
 		window.addEventListener('scroll', updateActiveToc);
+		updateActiveToc();
 
 		// Lightbox
 		const lightbox = document.getElementById('lightbox');
@@ -967,7 +1234,40 @@
 			if (e.key === 'ArrowRight') {
 				navigateLightbox(1);
 			}
+
+			const activeElement = document.activeElement;
+			const isTyping = activeElement?.tagName === 'INPUT' || activeElement?.tagName === 'TEXTAREA' || activeElement?.isContentEditable;
+
+			if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !isTyping) {
+				e.preventDefault();
+				if (window.innerWidth <= 768) {
+					const sidebar = document.getElementById('tocSidebar');
+					const overlay = document.getElementById('tocOverlay');
+					sidebar.classList.add('open');
+					overlay.classList.add('open');
+				}
+				tocSearchInput.focus();
+			}
+
+			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'm') {
+				e.preventDefault();
+				const enabled = !document.body.classList.contains('focus-mode');
+				applyFocusMode(enabled);
+				localStorage.setItem(FOCUS_STORAGE_KEY, enabled ? '1' : '0');
+			}
 		});
+
+		focusModeBtn.addEventListener('click', () => {
+			const enabled = !document.body.classList.contains('focus-mode');
+			applyFocusMode(enabled);
+			localStorage.setItem(FOCUS_STORAGE_KEY, enabled ? '1' : '0');
+		});
+
+		tocSearchInput.addEventListener('input', filterToc);
+
+		injectBossCheckButtons();
+		filterToc();
+		applyFocusMode(localStorage.getItem(FOCUS_STORAGE_KEY) === '1');
 
 		// Scroll to top button
 		const scrollTopBtn = document.getElementById('scrollTop');
